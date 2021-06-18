@@ -102,7 +102,7 @@ class TorchConnector(Module):
             ctx.neural_network = neural_network
             ctx.sparse = sparse
             ctx.save_for_backward(input_data, weights)
-            result = neural_network.forward(input_data.detach().numpy(), weights.detach().numpy())
+            result = neural_network.forward(input_data.detach().numpy(), weights.numpy())
             if neural_network.sparse and sparse:
                 if not _HAS_SPARSE:
                     raise MissingOptionalLibraryError(
