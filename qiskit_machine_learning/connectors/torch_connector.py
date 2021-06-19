@@ -197,6 +197,10 @@ class TorchConnector(Module):
                 weights_grad = einsum("ij,ijk->k", grad_output, weights_grad)
 
             # return gradients for the first two arguments and None for the others (i.e. qnn/sparse)
+            if input_grad:
+                input_grad = input_grad.cuda()
+            if weights_grad:
+                weights_grad = weights_grad.cuda()
             return input_grad, weights_grad, None, None
 
     def __init__(
