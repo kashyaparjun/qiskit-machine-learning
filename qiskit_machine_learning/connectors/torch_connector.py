@@ -101,7 +101,7 @@ class TorchConnector(Module):
 
             ctx.neural_network = neural_network
             ctx.sparse = sparse
-            ctx.save_for_backward(input_data, weights)
+            ctx.save_for_backward(input_data.cpu(), weights.cpu())
             result = neural_network.forward(input_data.cpu().detach().numpy(), weights.cpu().detach().numpy())
             if neural_network.sparse and sparse:
                 if not _HAS_SPARSE:
@@ -155,7 +155,7 @@ class TorchConnector(Module):
                 grad_output = grad_output.view(1, -1)
 
             # evaluate QNN gradient
-            input_grad, weights_grad = neural_network.backward(input_data.cpu().detach().numpy(), weights.cpu().detach().numpy())
+            input_grad, weights_grad = neural_network.backward(input_data.detach().numpy(), weights.detach().numpy())
             if input_grad is not None:
                 if np.prod(input_grad.shape) == 0:
                     input_grad = None
